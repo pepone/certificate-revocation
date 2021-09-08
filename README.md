@@ -1,4 +1,4 @@
-This sample ilustrate that the CRL distribution point is not contacted
+This sample ilustrate that the CRL distribution point is not contacted by `SecTrustEvaluateWithError`
 
 # Compilation
 
