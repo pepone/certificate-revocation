@@ -69,7 +69,18 @@ int main(int argc, char** argv)
     }
     else
     {
-        cerr << "not trusted error code: " << CFErrorGetCode(trustErr) << endl;
+        long errorCode = CFErrorGetCode(trustErr);
+        switch(errorCode)
+        {
+        case errSecCertificateRevoked:
+            cerr << "not trusted: certificate revoked" << endl;
+            break;
+        case errSecIncompleteCertRevocationCheck:
+            cerr << "not trusted: incomplete revocation check" << endl;
+            break;
+        default:
+            cerr << "not trusted error code: " << errorCode << endl;
+        }
     }
 
     // cleanup

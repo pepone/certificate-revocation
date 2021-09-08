@@ -2,7 +2,9 @@ This sample ilustrate that the CRL distribution point is not contacted by `SecTr
 
 # Compilation
 
+```
 clang++ main.cpp -o revocation -framework Security -framework CoreFoundation
+```
 
 # Run
 
@@ -20,9 +22,11 @@ Run the test executable
 
 # Expected Result
 
-The certificate must be trusted, and the program should output `trusted`
+Verificaction should contact the CRL distribution point and trust error should indicate that
+the certificate has been revoked, `errSecCertificateRevoked` the program should output
+`not trusted: certificate revoked`
 
 # Actual Result
 
-The certificate is not trusted, and the program outputs `not trusted error code: -67635`
-this correspond with `errSecIncompleteCertRevocationCheck` error
+The certificate is not trusted, the trust error indicate the revocation check was not complete
+`errSecIncompleteCertRevocationCheck` the program outputs `not trusted: incomplete revocation check`
