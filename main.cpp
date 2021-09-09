@@ -10,20 +10,20 @@
 
 using namespace std;
 
-CFMutableDataRef readCertFile(const string& file);
+SecCertificateRef createCertificateFromFrile(const string& file);
 
 int main(int argc, char** argv)
 {
-    SecCertificateRef ca = SecCertificateCreateWithData(0, readCertFile("cacert1.der"));
+    SecCertificateRef ca = createCertificateFromFrile("ca1.der");
     if(ca == 0)
     {
-        throw runtime_error("error reading certiticate cacert1.der ");
+        throw runtime_error("error reading certiticate ca1.der ");
     }
 
-    SecCertificateRef servercert = SecCertificateCreateWithData(0, readCertFile("servercert.der"));
+    SecCertificateRef servercert = createCertificateFromFrile("server1.der");
     if(ca == 0)
     {
-        throw runtime_error("error reading certiticate servercert.der ");
+        throw runtime_error("error reading certiticate server1.der ");
     }
 
     CFMutableArrayRef policies = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
@@ -98,7 +98,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CFMutableDataRef readCertFile(const string& file)
+SecCertificateRef createCertificateFromFrile(const string& file)
 {
     ifstream is(file, ios::in | ios::binary);
     if(!is.good())
@@ -117,5 +117,7 @@ CFMutableDataRef readCertFile(const string& file)
     {
         throw runtime_error("error reading file " + file);
     }
-    return data;
+    SecCertificateRef cert = SecCertificateCreateWithData(0, data);
+    CFRelease(data);
+    return cert;
 }
